@@ -10,9 +10,10 @@ public class AIManager : MonoBehaviour {
     //basic enemies
     private List<GameObject> basicEnemies;
     public Sprite[] basicEnemySprites;
+    //bi enemies
+    private List<GameObject> biEnemy;
 
     //rotating enemies
-    //bi enemies
 
     //spawning variables
     private float spawnTimer = 5f, spawnX;
@@ -33,6 +34,7 @@ public class AIManager : MonoBehaviour {
         cameraBounds = new Bounds(camera.transform.position, new Vector3(cameraHeight * screenAspect, cameraHeight, 0));
 
         basicEnemies = new List<GameObject>();
+        biEnemy = new List<GameObject>();
 	}
 	
     //Awake
@@ -47,6 +49,7 @@ public class AIManager : MonoBehaviour {
         if (spawnTimer <= 0)
         {
             spawnBasic();
+            spawnBiEnemy();
             spawnTimer = 4f;
         }
 
@@ -75,5 +78,13 @@ public class AIManager : MonoBehaviour {
         }
     }
 
+    //spawn bi enemy
+    private void spawnBiEnemy()
+    {
+        if (biEnemy.Count < 6)
+        {
+            biEnemy.Add((GameObject)Instantiate(enemyPrefabs[1], new Vector2(cameraBounds.center.x, cameraBounds.min.y), Quaternion.identity));
+        }
+    }
 
 }

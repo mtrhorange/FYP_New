@@ -20,7 +20,7 @@ public class MainBody : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other)
     {
         //if the other thing that touch me is a laser, check for player script instead if possible
-        if (other.gameObject.tag == "PlayerLaser")
+        if (other.GetComponent<PlayerLaser>())
         {
             //weaken
             GetComponentInParent<Enemy>().weakened = true;

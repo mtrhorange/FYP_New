@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyLaser : MonoBehaviour
 {
     private float lifeTime = 10f;
-    public int damage;
+    public int damage = 1;
 
 	// Use this for initialization
 	void Start()

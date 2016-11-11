@@ -17,7 +17,7 @@ public class WeakPoint : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other)
     {
         //if the other thing that touch me is a laser, check for player script instead if possible
-        if (other.gameObject.tag == "PlayerLaser")
+        if (other.GetComponent<PlayerLaser>())
         {
             //damage
             GetComponentInParent<Enemy>().GetDamage(1);//other.gameObject.GetComponent<PlayerLaser>().damage);

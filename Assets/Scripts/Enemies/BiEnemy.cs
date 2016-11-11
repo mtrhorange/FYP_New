@@ -10,6 +10,8 @@ public class BiEnemy : Enemy {
         HP = 1;
         moveSpeed = 35f;
 
+        transform.Rotate(Vector3.forward, 90f);
+
         //attack timer
         setAttackTimer();
     }
@@ -24,6 +26,6 @@ public class BiEnemy : Enemy {
     protected override void Attack()
     {
         Instantiate(eLaser, transform.position, transform.rotation);
-        Instantiate(eLaser, transform.position, new Quaternion(transform.rotation.x, transform.rotation.y, 90f, transform.rotation.w));
+        Instantiate(eLaser, transform.position, Quaternion.Euler(transform.rotation.x, transform.rotation.y, 270));
     }
 }

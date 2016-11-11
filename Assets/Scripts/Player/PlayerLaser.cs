@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PlayerLaser : MonoBehaviour {
 
+    private float lifeTime = 10f;
 	public int damage = 1;
 
 	// Use this for initialization
@@ -12,6 +13,10 @@ public class PlayerLaser : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if (lifeTime < 0)
+        {
+            Destroy(this.gameObject);
+        }
+        lifeTime -= Time.deltaTime;
 	}
 }
