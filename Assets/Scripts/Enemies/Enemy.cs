@@ -43,7 +43,7 @@ public class Enemy : MonoBehaviour {
 	}
 
     //Move
-    protected void Move()
+    protected virtual void Move()
     {
         if (goDown)
         {
