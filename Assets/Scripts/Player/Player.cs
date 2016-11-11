@@ -4,6 +4,7 @@ using System.Collections;
 public class Player : MonoBehaviour {
 
 	Camera camera;
+	public Player otherPlayer;
 	public int playerNo = 1;
 
 	float moveSpeed = 1f;
@@ -11,8 +12,10 @@ public class Player : MonoBehaviour {
 	bool canShoot = true;
 	float shootTimer = 0;
 
-	public GameObject laser;
+	public GameObject laserPrefab;
 	Sprite sprite;
+
+	int noOfLaser = 1;
 	// Use this for initialization
 	void Start () {
 		sprite = GetComponent<SpriteRenderer> ().sprite;
@@ -72,7 +75,26 @@ public class Player : MonoBehaviour {
 	}
 
 	public void Shoot() {
-		Instantiate (laser, transform.position, transform.rotation);
+		if (noOfLaser == 1) {
+			GameObject laser = (GameObject)Instantiate (laserPrefab, transform.position, transform.rotation);
+			laser.GetComponent<PlayerLaser> ().damage = 1;
+		}
 		canShoot = false;
 	}
+
+	void OnTriggerEnter2D(Collider2D other) {
+
+		if (other.GetComponent<EnemyLaser> ()) {
+			GetDamage (1);
+		}
+
+	}
+
+	void LaserPowerup() {
+		if (noOfLaser < 3) {
+			noOfLaser++;
+		}
+	}
+
+
 }
