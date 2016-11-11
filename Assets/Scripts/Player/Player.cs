@@ -150,14 +150,12 @@ public class Player : MonoBehaviour {
 
 		if (other.GetComponent<EnemyLaser> ()) {
 			GetDamage (other.GetComponent<EnemyLaser> ().damage);
-		}
-
-		if (other.GetComponent<Enemy> ()) {
-			GetDamage (2);
+            Destroy(other.gameObject);
 		}
         else if (other.GetComponent<Enemy>())
         {
             GetDamage(2);
+            Destroy(other.gameObject);
         }
 
 		if (other.GetComponent<Powerup> ()) {
