@@ -7,26 +7,30 @@ public class Enemy : MonoBehaviour {
 	public GameObject eLaser;
 
     //health
-	internal bool weakened = false;
-	private int HP = 1;
+	public bool weakened = false;
+	protected int HP = 1;
 
     //movement
-	private bool goLeft = false, faceDown = false;
-    private float moveSpeed = 60f;
+	protected bool goDown = false, faceLeft = false;
+    protected float moveSpeed = 60f;
 
     //attack
     public float attackTimer;
-    private float minTime = 5f, maxTime = 8f;
+    protected float minTime = 5f, maxTime = 8f;
 
 
 	//Start
-	void Start()
+	protected virtual void Start()
     {
         //random whether face up or down
         if (Random.Range(0, 2) == 1)
         {
-            transform.Rotate(Vector3.forward, 180f);
-            faceDown = true;
+            transform.Rotate(Vector3.forward, -90f);
+            faceLeft = true;
+        }
+        else
+        {
+            transform.Rotate(Vector3.forward, 90f);
         }
 
         //attack timer
@@ -34,10 +38,17 @@ public class Enemy : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
-		if (goLeft)
-		{
-            if (faceDown)
+	protected virtual void Update()
+    {
+        Move();
+	}
+
+    //Move
+    protected void Move()
+    {
+        if (goDown)
+        {
+            if (faceLeft)
             {
                 GetComponent<Rigidbody2D>().velocity = transform.right * Time.deltaTime * moveSpeed;
             }
@@ -45,14 +56,14 @@ public class Enemy : MonoBehaviour {
             {
                 GetComponent<Rigidbody2D>().velocity = -transform.right * Time.deltaTime * moveSpeed;
             }
-			if (transform.position.x < AIManager.instance.cameraBounds.min.x)
-			{
-				goLeft = false;
-			}
-		}
-		else
-		{
-            if (faceDown)
+            if (transform.position.y < AIManager.instance.cameraBounds.min.y)
+            {
+                goDown = false;
+            }
+        }
+        else
+        {
+            if (faceLeft)
             {
                 GetComponent<Rigidbody2D>().velocity = -transform.right * Time.deltaTime * moveSpeed;
             }
@@ -60,28 +71,32 @@ public class Enemy : MonoBehaviour {
             {
                 GetComponent<Rigidbody2D>().velocity = transform.right * Time.deltaTime * moveSpeed;
             }
-            if (transform.position.x > AIManager.instance.cameraBounds.max.x)
-			{
-				goLeft = true;
-			}
-		}
+            if (transform.position.y > AIManager.instance.cameraBounds.max.y)
+            {
+                goDown = true;
+            }
+        }
 
 
         //attack once timer is over
         if (attackTimer <= 0)
         {
-            Instantiate(eLaser, transform.position, transform.rotation);
-
+            Attack();
             //reset timer
             setAttackTimer();
         }
 
         attackTimer -= Time.deltaTime;
-	}
+    }
 
+    //Attack
+    protected void Attack()
+    {
+        Instantiate(eLaser, transform.position, transform.rotation);
+    }
 
 	//called when this entity receives damage from another source
-	internal void GetDamage(int dmg)
+	public void GetDamage(int dmg)
 	{
 		HP -= dmg;
 		//check die
@@ -92,7 +107,7 @@ public class Enemy : MonoBehaviour {
 	}
 
     //set attack timer
-    private void setAttackTimer()
+    protected void setAttackTimer()
     {
         attackTimer = Random.Range(minTime, maxTime);
     }
