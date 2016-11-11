@@ -4,7 +4,7 @@ using System.Collections;
 public class Enemy : MonoBehaviour {
 
     //laser prefab
-	public GameObject eLaser;
+	public GameObject eLaser, explosion;
 
     //health
 	public bool weakened = false;
@@ -91,7 +91,7 @@ public class Enemy : MonoBehaviour {
     //Attack
     protected virtual void Attack()
     {
-        
+        Instantiate(eLaser, transform.position, transform.rotation);
     }
 
 	//called when this entity receives damage from another source
@@ -109,5 +109,11 @@ public class Enemy : MonoBehaviour {
     protected void setAttackTimer()
     {
         attackTimer = Random.Range(minTime, maxTime);
+    }
+
+    //On destroy
+    protected virtual void OnDestroy()
+    {
+        Destroy(Instantiate(explosion, transform.position, Quaternion.identity), 2f);
     }
 }

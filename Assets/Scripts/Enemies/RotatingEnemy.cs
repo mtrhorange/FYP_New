@@ -5,9 +5,14 @@ public class RotatingEnemy : Enemy
 {
 
     public float rotateSpeed = 35f;
+
+
 	// Use this for initialization
-	void Start () {
-	
+	protected override void Start ()
+    {
+        HP = 2;
+
+        setAttackTimer();
 	}
 
     // Update is called once per frame
@@ -43,5 +48,15 @@ public class RotatingEnemy : Enemy
                 goDown = true;
             }
         }
+
+        //attack once timer is over
+        if (attackTimer <= 0)
+        {
+            Attack();
+            //reset timer
+            setAttackTimer();
+        }
+
+        attackTimer -= Time.deltaTime;
     }
 }

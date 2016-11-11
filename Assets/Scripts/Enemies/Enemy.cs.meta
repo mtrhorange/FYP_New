@@ -1,10 +1,13 @@
 fileFormatVersion: 2
 guid: 731f652bfb8385742a094fbeca6934ca
-timeCreated: 1478870876
+timeCreated: 1478898655
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - eLaser: {instanceID: 0}
+  - explosion: {fileID: 1000013723454402, guid: a317884fc922ece48a2e4a0443ef21c9,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

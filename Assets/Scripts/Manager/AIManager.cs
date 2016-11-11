@@ -12,12 +12,13 @@ public class AIManager : MonoBehaviour {
     public Sprite[] basicEnemySprites;
     //bi enemies
     private List<GameObject> biEnemy;
-
     //rotating enemies
+    private List<GameObject> rotatingEnemies;
 
     //spawning variables
     private float spawnTimer = 5f, spawnX;
-    private bool leftLane = true;
+    private bool leftLane = true, spawningAlien = false;
+    private int pattern = 0, alienCount= 0, alienLimit;
 
     //camera
     Camera camera;
@@ -35,6 +36,7 @@ public class AIManager : MonoBehaviour {
 
         basicEnemies = new List<GameObject>();
         biEnemy = new List<GameObject>();
+        rotatingEnemies = new List<GameObject>();
 	}
 	
     //Awake
@@ -46,9 +48,28 @@ public class AIManager : MonoBehaviour {
 	//Update
 	void Update()
     {
-        if (spawnTimer <= 0)
+        if (spawningAlien && spawnTimer <= 0)
         {
-            spawnBasic();
+            spawnAlien();
+        }
+        else if (!spawningAlien && spawnTimer <= 0)
+        {
+            int spon = Random.Range(0, 3);
+            if (spon == 0)
+            {
+                spawnBasic();
+            }
+            else if (spon == 1)
+            {
+                spawnRotating();
+            }
+            else if (spon == 2)
+            {
+                spawningAlien = true;
+                //set pattern
+                pattern = Random.Range(1, 4);
+                alienLimit = Random.Range(4, 11);
+            }
             spawnBiEnemy();
             spawnTimer = 4f;
         }
@@ -59,7 +80,7 @@ public class AIManager : MonoBehaviour {
     //spawn basic enemies
     private void spawnBasic()
     {
-        if (basicEnemies.Count < 8)
+        if (basicEnemies.Count < 4)
         {
             if (leftLane)
             {
@@ -87,4 +108,75 @@ public class AIManager : MonoBehaviour {
         }
     }
 
+    //spawn rotating enemy
+    private void spawnRotating()
+    {
+        if (rotatingEnemies.Count < 4)
+        {
+            if (leftLane)
+            {
+                spawnX = cameraBounds.center.x - 1f;
+            }
+            else
+            {
+                spawnX = cameraBounds.center.x + 1f;
+            }
+
+            rotatingEnemies.Add((GameObject)Instantiate(enemyPrefabs[2], new Vector2(spawnX, cameraBounds.min.y), Quaternion.identity));
+
+            leftLane = !leftLane;
+        }
+    }
+
+    //spawn alien
+    private void spawnAlien()
+    {
+        if (pattern == 1)
+        {
+            //for player 1 side
+            GameObject g = (GameObject)Instantiate(enemyPrefabs[3], new Vector2(cameraBounds.center.x - 2f, cameraBounds.max.y), Quaternion.identity);
+            g.GetComponent<AlienEnemy>().target = new Vector2(cameraBounds.min.x, cameraBounds.center.y - 2f);
+            g.transform.Rotate(Vector3.forward, 180f);
+
+            //for player 2 side
+            g = (GameObject)Instantiate(enemyPrefabs[3], new Vector2(cameraBounds.center.x + 2f, cameraBounds.min.y), Quaternion.identity);
+            g.GetComponent<AlienEnemy>().target = new Vector2(cameraBounds.max.x, cameraBounds.center.y + 2f);
+        }
+        else if (pattern == 2)
+        {
+            //for player 1 side
+            GameObject g = (GameObject)Instantiate(enemyPrefabs[3], new Vector2(cameraBounds.center.x - 2f, cameraBounds.min.y), Quaternion.identity);
+            g.GetComponent<AlienEnemy>().target = new Vector2(cameraBounds.min.x, cameraBounds.center.y + 2f);
+
+            //for player 2 side
+            g = (GameObject)Instantiate(enemyPrefabs[3], new Vector2(cameraBounds.center.x + 2f, cameraBounds.max.y), Quaternion.identity);
+            g.GetComponent<AlienEnemy>().target = new Vector2(cameraBounds.max.x, cameraBounds.center.y - 2f);
+            g.transform.Rotate(Vector3.forward, 180f);
+        }
+        else if (pattern == 3)
+        {
+            //for player 1 side
+            GameObject g = (GameObject)Instantiate(enemyPrefabs[3], new Vector2(cameraBounds.center.x - 2f, cameraBounds.max.y), Quaternion.identity);
+            g.GetComponent<AlienEnemy>().target = new Vector2(cameraBounds.min.x, cameraBounds.center.y - 2f);
+            g.transform.Rotate(Vector3.forward, 180f);
+            g = (GameObject)Instantiate(enemyPrefabs[3], new Vector2(cameraBounds.center.x - 2f, cameraBounds.min.y), Quaternion.identity);
+            g.GetComponent<AlienEnemy>().target = new Vector2(cameraBounds.min.x, cameraBounds.center.y + 2f);
+
+            //for player 2 side
+            g = (GameObject)Instantiate(enemyPrefabs[3], new Vector2(cameraBounds.center.x + 2f, cameraBounds.min.y), Quaternion.identity);
+            g.GetComponent<AlienEnemy>().target = new Vector2(cameraBounds.max.x, cameraBounds.center.y + 2f);
+            g = (GameObject)Instantiate(enemyPrefabs[3], new Vector2(cameraBounds.center.x + 2f, cameraBounds.max.y), Quaternion.identity);
+            g.GetComponent<AlienEnemy>().target = new Vector2(cameraBounds.max.x, cameraBounds.center.y - 2f);
+            g.transform.Rotate(Vector3.forward, 180f);
+        }
+        alienCount++;
+        spawnTimer = 0.5f;
+
+        if (alienCount >= alienLimit)
+        {
+            spawningAlien = false;
+            spawnTimer = 4f;
+            alienCount = 0;
+        }
+    }
 }

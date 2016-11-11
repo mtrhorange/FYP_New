@@ -87,6 +87,10 @@ public class Player : MonoBehaviour {
 		if (other.GetComponent<EnemyLaser> ()) {
 			GetDamage (1);
 		}
+        else if (other.GetComponent<Enemy>())
+        {
+            GetDamage(2);
+        }
 
 	}
 
