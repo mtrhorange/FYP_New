@@ -89,9 +89,9 @@ public class Enemy : MonoBehaviour {
     }
 
     //Attack
-    protected void Attack()
+    protected virtual void Attack()
     {
-        Instantiate(eLaser, transform.position, transform.rotation);
+        
     }
 
 	//called when this entity receives damage from another source

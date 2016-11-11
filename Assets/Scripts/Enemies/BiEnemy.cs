@@ -19,4 +19,11 @@ public class BiEnemy : Enemy {
     {
         base.Update();
     }
+
+    //Attack
+    protected override void Attack()
+    {
+        Instantiate(eLaser, transform.position, transform.rotation);
+        Instantiate(eLaser, transform.position, new Quaternion(transform.rotation.x, transform.rotation.y, 90f, transform.rotation.w));
+    }
 }
