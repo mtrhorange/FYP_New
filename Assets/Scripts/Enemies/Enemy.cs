@@ -3,13 +3,21 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour {
 
+    //laser prefab
 	public GameObject eLaser;
 
+    //health
 	internal bool weakened = false;
 	private int HP = 1;
 
+    //movement
 	private bool goLeft = false;
 
+    //attack
+    public float attackTimer;
+    private float minTime = 5f, maxTime = 8f;
+
+    //camera
 	Camera camera;
 	Bounds cameraBounds;
 
@@ -41,6 +49,18 @@ public class Enemy : MonoBehaviour {
 				goLeft = true;
 			}
 		}
+
+
+        //attack once timer is over
+        if (attackTimer <= 0)
+        {
+            Instantiate(eLaser, transform.position, transform.rotation);
+
+            //reset timer
+            setAttackTimer();
+        }
+
+        attackTimer -= Time.deltaTime;
 	}
 
 
@@ -54,4 +74,10 @@ public class Enemy : MonoBehaviour {
 			Destroy(this.gameObject);
 		}
 	}
+
+    //set attack timer
+    private void setAttackTimer()
+    {
+        attackTimer = Random.Range(minTime, maxTime);
+    }
 }
