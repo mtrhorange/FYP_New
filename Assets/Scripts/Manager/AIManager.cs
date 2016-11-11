@@ -16,7 +16,7 @@ public class AIManager : MonoBehaviour {
     //rotating enemies
 
     //spawning variables
-    private float spawnTimer = 5f, spawnX;
+    public float spawnTimer = 5f, spawnX;
     private bool leftLane = true;
 
     //camera
