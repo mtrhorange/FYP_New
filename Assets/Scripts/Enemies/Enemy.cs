@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour {
 	protected int HP = 1;
 
     //movement
-	protected bool goDown = false, faceLeft = false;
+	public bool goDown = false, faceLeft;
     protected float moveSpeed = 60f;
 
     //attack
@@ -23,12 +23,11 @@ public class Enemy : MonoBehaviour {
 	protected virtual void Start()
     {
         //random whether face up or down
-        if (Random.Range(0, 2) == 1)
+        if (faceLeft)
         {
             transform.Rotate(Vector3.forward, -90f);
-            faceLeft = true;
         }
-        else
+        else if (!faceLeft)
         {
             transform.Rotate(Vector3.forward, 90f);
         }

@@ -20,7 +20,7 @@ public class WeakPoint : MonoBehaviour {
         if (other.gameObject.tag == "PlayerLaser")
         {
             //damage
-            GetComponentInParent<Enemy>().GetDamage(1);
+            GetComponentInParent<Enemy>().GetDamage(1);//other.gameObject.GetComponent<PlayerLaser>().damage);
 
             Destroy(other.gameObject);
         }

@@ -14,7 +14,9 @@ public class AIManager : MonoBehaviour {
     //rotating enemies
     //bi enemies
 
-    private float spawnTimer = 5f;
+    //spawning variables
+    private float spawnTimer = 5f, spawnX;
+    private bool leftLane = true;
 
     //camera
     Camera camera;
@@ -45,7 +47,7 @@ public class AIManager : MonoBehaviour {
         if (spawnTimer <= 0)
         {
             spawnBasic();
-            spawnTimer = 5f;
+            spawnTimer = 4f;
         }
 
         spawnTimer -= Time.deltaTime;
@@ -54,10 +56,24 @@ public class AIManager : MonoBehaviour {
     //spawn basic enemies
     private void spawnBasic()
     {
-        if (basicEnemies.Count < 5)
+        if (basicEnemies.Count < 8)
         {
-            basicEnemies.Add((GameObject)Instantiate(enemyPrefabs[0], new Vector2(cameraBounds.center.x, cameraBounds.min.y), Quaternion.identity));
+            if (leftLane)
+            {
+                spawnX = cameraBounds.center.x - 1f;
+            }
+            else
+            {
+                spawnX = cameraBounds.center.x + 1f;
+            }
+
+            basicEnemies.Add((GameObject)Instantiate(enemyPrefabs[0], new Vector2(spawnX, cameraBounds.min.y), Quaternion.identity));
             basicEnemies[basicEnemies.Count-1].GetComponent<SpriteRenderer>().sprite = basicEnemySprites[Random.Range(0, 4)];
+            basicEnemies[basicEnemies.Count-1].GetComponent<Enemy>().faceLeft = !leftLane;
+
+            leftLane = !leftLane;
         }
     }
+
+
 }
