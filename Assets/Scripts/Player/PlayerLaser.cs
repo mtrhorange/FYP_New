@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerLaser : MonoBehaviour {
 
-    private float lifeTime = 10f;
+    private float lifeTime = 3f;
 	public int damage = 1;
 
 	// Use this for initialization

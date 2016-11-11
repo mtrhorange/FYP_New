@@ -16,7 +16,8 @@ public class AIManager : MonoBehaviour {
     private List<GameObject> rotatingEnemies;
 
     //spawning variables
-    private float spawnTimer = 5f, spawnX;
+    public float spawnTimer = 5f;
+    private float spawnX;
     private bool leftLane = true, spawningAlien = false;
     private int pattern = 0, alienCount= 0, alienLimit;
 

@@ -19,9 +19,15 @@ public class Shield : MonoBehaviour {
 
 		if (other.GetComponent<EnemyLaser> ()) {
 			GetDamage (other.GetComponent<EnemyLaser> ().damage);
-		}
-		if (other.GetComponent<Enemy> ()) 
-			GetDamage (2);
+            Destroy(other.gameObject);
+        }
+	    if (other.GetComponent<AlienEnemy>())
+	    {
+            GetDamage(2);
+            Destroy(other.gameObject);
+        }
+			
+        
 	}
 
 	void GetDamage(int i) {

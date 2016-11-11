@@ -25,7 +25,9 @@ public class BiEnemy : Enemy {
     //Attack
     protected override void Attack()
     {
-        Instantiate(eLaser, transform.position, transform.rotation);
-        Instantiate(eLaser, transform.position, Quaternion.Euler(transform.rotation.x, transform.rotation.y, 270));
+        GameObject temp = (GameObject)Instantiate(eLaser, transform.position, transform.rotation);
+        temp.GetComponent<EnemyLaser>().damage = 1;
+        temp = (GameObject)Instantiate(eLaser, transform.position, Quaternion.Euler(transform.rotation.x, transform.rotation.y, 270));
+        temp.GetComponent<EnemyLaser>().damage = 1;
     }
 }

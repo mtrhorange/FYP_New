@@ -32,4 +32,16 @@ public class AlienEnemy : Enemy {
             Destroy(this.gameObject);
         }
     }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        //if the other thing that touch me is a laser, check for player script instead if possible
+        if (other.GetComponent<PlayerLaser>())
+        {
+            //damage
+            GetDamage(1);
+
+            Destroy(other.gameObject);
+        }
+    }
 }

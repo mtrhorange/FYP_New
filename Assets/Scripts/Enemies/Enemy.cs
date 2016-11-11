@@ -91,7 +91,8 @@ public class Enemy : MonoBehaviour {
     //Attack
     protected virtual void Attack()
     {
-        Instantiate(eLaser, transform.position, transform.rotation);
+        GameObject temp = (GameObject)Instantiate(eLaser, transform.position, transform.rotation);
+        temp.GetComponent<EnemyLaser>().damage = 1;
     }
 
 	//called when this entity receives damage from another source
@@ -101,7 +102,8 @@ public class Enemy : MonoBehaviour {
 		//check die
 		if (HP <= 0)
 		{
-			Destroy(this.gameObject);
+            explode();
+            Destroy(this.gameObject);
 		}
 	}
 
@@ -114,6 +116,11 @@ public class Enemy : MonoBehaviour {
     //On destroy
     protected virtual void OnDestroy()
     {
-        Destroy(Instantiate(explosion, transform.position, Quaternion.identity), 2f);
+        
+    }
+
+    protected void explode()
+    {
+        Instantiate(explosion, transform.position, Quaternion.identity);
     }
 }

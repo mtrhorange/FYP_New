@@ -5,12 +5,13 @@ public class Powerup : MonoBehaviour {
 
 	public enum Types {Shield, Laser, Heal, Split}
 
+    public Vector3 direction;
 	public Types type;
 
 	float lifespan = 20f;
 	// Use this for initialization
 	void Start () {
-		GetComponent<Rigidbody2D>().velocity = (transform.up + transform.right) * Time.deltaTime * 500f;
+		GetComponent<Rigidbody2D>().velocity = direction * Time.deltaTime * 50f;
 	}
 	
 	// Update is called once per frame

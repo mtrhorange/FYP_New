@@ -1,40 +1,61 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class PowerupSpawner : MonoBehaviour {
+public class PowerUpSpawner : MonoBehaviour
+{
+    public List<GameObject> powerUpList;
+    public float timeToNext;
+    public float randomTimeMin = 5f;
+    public float randomTimeMax = 10f;
+    
 
-	float spawnTimer = 30;
-
-	public GameObject shieldPrefab, splitPrefab, healPrefab, laserPrefab;
-	// Use this for initialization
-	void Start () {
-		
+    // Use this for initialization
+    void Start ()
+	{
+	    timeToNext = Random.Range(randomTimeMin, randomTimeMax);
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		spawnTimer += Time.deltaTime;
+	void Update ()
+	{
+        timeToNext -= Time.deltaTime;
 
-		if (spawnTimer >= 4f) {
-			int rand = Random.Range (0, 4);
-			if (rand == 0) {
-				GameObject power = (GameObject)Instantiate (shieldPrefab, transform.position, Quaternion.identity);
+	    if (timeToNext <= 0)
+	    {
+	        GameObject temp = (GameObject)Instantiate(powerUpList[Random.Range(0, 4)], transform.position, Quaternion.identity);
 
-			}
-			else if (rand == 1) {
-				GameObject power = (GameObject)Instantiate (splitPrefab, transform.position, Quaternion.identity);
+	        temp.GetComponent<Powerup>().direction = getDirection();
 
-			}
-			else if (rand == 2) {
-				GameObject power = (GameObject)Instantiate (healPrefab, transform.position, Quaternion.identity);
-			
-			}
-			else if (rand == 3) {
-				GameObject power = (GameObject)Instantiate (laserPrefab, transform.position, Quaternion.identity);
 
-			}
+            timeToNext = Random.Range(randomTimeMin, randomTimeMax);
+        }
 
-			spawnTimer = 0f;
-		}
 	}
+
+    private Vector3 getDirection()
+    {
+        Vector3 direction;
+
+        if (Random.Range(0, 2) == 0)
+        {
+            direction = transform.up * Random.Range(0f, 1f);
+        }
+        else
+        {
+            direction = -transform.up * Random.Range(0f, 1f);
+        }
+
+        if (Random.Range(0, 2) == 0)
+        {
+            direction += transform.right ;
+
+        }
+        else
+        {
+            direction -= transform.right;
+        }
+
+        return direction;
+    }
 }

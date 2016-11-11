@@ -8,11 +8,12 @@ public class Player : MonoBehaviour {
 	public int playerNo = 1;
 
 	float moveSpeed = 1f;
-	int health = 10;
+	public int health = 10;
 	bool canShoot = true;
 	float shootTimer = 0;
 
 	public GameObject laserPrefab;
+    public GameObject explosionPrefab;
 	public Sprite lvl1Ship;
 	public Sprite lvl2Ship;
 	Sprite sprite;
@@ -93,24 +94,59 @@ public class Player : MonoBehaviour {
 	}
 
 	public void GetDamage(int dmg) {
-		health -= dmg;
+		
 
-		UpdateForcefield ();
+	    if (shield.activeSelf == false)
+        {
+            health -= dmg;
+            UpdateForcefield();
+        }
+        else
+	    {
+	        UpdateShield(dmg);
+	    }
 	}
 
-	void UpdateForcefield() {
+    void UpdateShield(int dmg)
+    {
+        Debug.Log("Shield Health: " + shield.GetComponent<Shield>().health);
+        shield.GetComponent<Shield>().health -= dmg;
+        if (shield.GetComponent<Shield>().health <= 0)
+        {
+            DisableShieldPowerup();
+        }
+    }
+
+
+    void UpdateForcefield() {
 
 		if (health > 1) {
 			//TODO
 			//Forcefield change colour from healthy to die(1hp)
+		    if (health > 6)
+		    {
+                forcefield.GetComponent<SpriteRenderer>().color = new Color32(0,255,255,255);
 
+            }else if (health > 3 && health < 7)
+		    {
+                forcefield.GetComponent<SpriteRenderer>().color = new Color32(255, 153, 0, 255);
+            }else if(health > 1 && health < 4)
+		    {
+                forcefield.GetComponent<SpriteRenderer>().color = new Color32(255, 50, 0, 255);
+            }
 			forcefield.SetActive (true);
 			GetComponent<CircleCollider2D> ().radius = 0.5f;
 		}
-		else if (health == 1) { //FORCEFIELD DIE(GONE)
+		else if (health <= 1 && forcefield.activeSelf) { //FORCEFIELD DIE(GONE)
+		    health = 1;
+            Debug.Log("force shield off");
 			forcefield.SetActive (false);
 			GetComponent<CircleCollider2D> ().radius = 0.2f;
-		}
+		}else if (health < 1 && !forcefield.activeSelf)
+		{
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+        }
 
 	}
 
@@ -152,7 +188,8 @@ public class Player : MonoBehaviour {
 			GetDamage (other.GetComponent<EnemyLaser> ().damage);
             Destroy(other.gameObject);
 		}
-        else if (other.GetComponent<Enemy>())
+
+        if (other.GetComponent<AlienEnemy>())
         {
             GetDamage(2);
             Destroy(other.gameObject);
@@ -211,8 +248,9 @@ public class Player : MonoBehaviour {
 	}
 
 	public void DisableShieldPowerup() {
-		shield.SetActive (false);
-	}
+        shield.GetComponent<Shield>().health = 0;
+        shield.SetActive(false);
+    }
 
 	void HealPowerup() {
 
