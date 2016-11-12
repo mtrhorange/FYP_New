@@ -13,7 +13,7 @@ public class BossSide : Boss {
 
 	// Use this for initialization
 	protected override void Start () {
-        HP = 10;
+        HP = 35;
 	}
 	
 	// Update is called once per frame
@@ -42,7 +42,6 @@ public class BossSide : Boss {
         //if turning soon
         if (turningSoon)
         {
-            Debug.Log(secondsToTurn);
             secondsToTurn -= Time.deltaTime;
             if (secondsToTurn <= 0)
             {
@@ -53,21 +52,20 @@ public class BossSide : Boss {
             Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y,
                 transform.rotation.eulerAngles.z + Time.deltaTime * 30f));
 
+                Debug.Log(transform.rotation.eulerAngles.z);
 
-                if ((transform.rotation.z.ToString("F0") == "0"))
+                if ((transform.rotation.eulerAngles.z.ToString("F0") == "270"))
                 {
                     turningSoon = false;
                     transform.parent.gameObject.GetComponent<Boss>().lookLeft = lookLeft;
                 }
-                else if ((transform.rotation.z.ToString("F0") == "180"))
+                else if ((transform.rotation.eulerAngles.z.ToString("F0") == "90"))
                 {
                     turningSoon = false;
                     transform.parent.gameObject.GetComponent<Boss>().lookLeft = lookLeft;
                 }
             }
         }
-
-
 
         base.Update();
 	}
@@ -96,14 +94,18 @@ public class BossSide : Boss {
     //get damage
     public override void GetDamage(int dmg)
     {
-        HP -= dmg;
+        this.HP -= dmg;
         Debug.Log("Got hit");
         transform.parent.gameObject.GetComponent<Boss>().organiseTurn();
 
         //check die
-        if (HP <= 0)
+        if (this.HP <= 0)
         {
             explode();
+            if (isBossSide)
+            {
+                transform.parent.GetComponent<Boss>().BossSideDestroyed();
+            }
             Destroy(this.gameObject);
         }
     }

@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour {
 
     //health
 	public bool weakened = false;
-	protected int HP = 5;
+	public int HP = 5;
 
     //movement
 	public bool goDown = false, faceLeft;
@@ -17,6 +17,8 @@ public class Enemy : MonoBehaviour {
     //attack
     public float attackTimer;
     protected float minTime = 3f, maxTime = 5f;
+
+    public bool isBossSide = false;
 
 
 	//Start
@@ -103,6 +105,8 @@ public class Enemy : MonoBehaviour {
 		if (HP <= 0)
 		{
             explode();
+            
+
             Destroy(this.gameObject);
 		}
 	}

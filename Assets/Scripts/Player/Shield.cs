@@ -5,6 +5,8 @@ public class Shield : MonoBehaviour {
 
 	public float health = 4f;
 	Player player;
+
+    public bool isBoss = false;
 	// Use this for initialization
 	void Start () {
 		player = transform.parent.GetComponent<Player> ();
@@ -18,17 +20,22 @@ public class Shield : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) {
 
-		if (other.GetComponent<EnemyLaser> ()) {
+		if (!isBoss && other.GetComponent<EnemyLaser> ()) {
 			GetDamage (other.GetComponent<EnemyLaser> ().damage);
 			GameObject laserHit = (GameObject)Resources.Load ("LaserHit");
 			laserHit.GetComponent<SpriteRenderer> ().color = other.GetComponent<SpriteRenderer> ().color;
 			Instantiate (laserHit, other.transform.position, other.transform.rotation);
             Destroy(other.gameObject);
         }
-	    if (other.GetComponentInParent<AlienEnemy>())
+	    if (!isBoss && other.GetComponentInParent<AlienEnemy>())
 	    {
             GetDamage(2);
 			other.GetComponentInParent<AlienEnemy> ().GetDamage (50);
+        }
+        if (isBoss && other.GetComponent<PlayerLaser>())
+        {
+            Destroy(other.gameObject);
+
         }
 			
         
