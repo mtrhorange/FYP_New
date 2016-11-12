@@ -55,7 +55,7 @@ public class AIManager : MonoBehaviour {
         }
         else if (!spawningAlien && spawnTimer <= 0)
         {
-            int spon = 1;//Random.Range(0, 3);
+            int spon = Random.Range(0, 3);
             if (spon == 0)
             {
                 spawnBasic();
@@ -71,7 +71,7 @@ public class AIManager : MonoBehaviour {
                 pattern = Random.Range(1, 4);
                 alienLimit = Random.Range(4, 11);
             }
-            //spawnBiEnemy();
+            spawnBiEnemy();
             spawnTimer = 3f;
         }
 
@@ -112,7 +112,7 @@ public class AIManager : MonoBehaviour {
     //spawn rotating enemy
     private void spawnRotating()
     {
-        if (rotatingEnemies.Count < 1)
+        if (rotatingEnemies.Count < 6)
         {
             if (leftLane)
             {
