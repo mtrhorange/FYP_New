@@ -8,6 +8,7 @@ public class Shield : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		player = transform.parent.GetComponent<Player> ();
+		UpdateShieldColor ();
 	}
 	
 	// Update is called once per frame
@@ -19,6 +20,9 @@ public class Shield : MonoBehaviour {
 
 		if (other.GetComponent<EnemyLaser> ()) {
 			GetDamage (other.GetComponent<EnemyLaser> ().damage);
+			GameObject laserHit = (GameObject)Resources.Load ("LaserHit");
+			laserHit.GetComponent<SpriteRenderer> ().color = other.GetComponent<SpriteRenderer> ().color;
+			Instantiate (laserHit, other.transform.position, other.transform.rotation);
             Destroy(other.gameObject);
         }
 	    if (other.GetComponent<AlienEnemy>())
@@ -32,8 +36,21 @@ public class Shield : MonoBehaviour {
 
 	void GetDamage(int i) {
 		health -= i;
+		UpdateShieldColor ();
 		if (health <= 0) {
 			player.DisableShieldPowerup ();
 		}
+	}
+
+	public void UpdateShieldColor() {
+		if (health == 4)
+			GetComponent<SpriteRenderer> ().color = new Color32 (62, 175, 255, 255);
+		else if (health == 3)
+			GetComponent<SpriteRenderer> ().color = new Color32 (255, 255, 0, 255);
+		else if (health == 2)
+			GetComponent<SpriteRenderer> ().color = new Color32 (255, 153, 0, 255);
+		else
+			GetComponent<SpriteRenderer> ().color = new Color32 (255, 37, 0, 150);
+
 	}
 }

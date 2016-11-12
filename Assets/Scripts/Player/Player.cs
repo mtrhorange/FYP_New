@@ -46,7 +46,7 @@ public class Player : MonoBehaviour {
 	void Update () {
 		if (!canShoot) {
 			shootTimer += Time.deltaTime;
-			if (shootTimer >= 0.75f) {
+			if (shootTimer >= 0.5f) {
 				canShoot = true;
 				shootTimer = 0;
 			}
@@ -59,31 +59,24 @@ public class Player : MonoBehaviour {
 
 	void MovementInput() {
 		if (playerNo == 1) {
-			if (Input.GetButton("UpP1") && transform.position.y + sprite.bounds.min.y > AIManager.instance.cameraBounds.min.y)
+			if (Input.GetButton("UpP1") && transform.position.y + sprite.bounds.max.y < AIManager.instance.cameraBounds.max.y)
             {
 				transform.position += transform.right * -1f * moveSpeed * 0.08f;
 			}
-            if (Input.GetButton("DownP1") && transform.position.y + sprite.bounds.max.y < AIManager.instance.cameraBounds.max.y)
+			if (Input.GetButton("DownP1") && transform.position.y + sprite.bounds.min.y > AIManager.instance.cameraBounds.min.y)
             {
 				transform.position += transform.right * moveSpeed * 0.08f;
-			}
-			if (!canShoot) {
-				shootTimer += Time.deltaTime;
-				if (shootTimer >= 0.5f) {
-					canShoot = true;
-					shootTimer = 0;
-				}
 			}
 				
 			if (Input.GetButton("ShootP1") && canShoot) {
 				Shoot ();
 			}
 		} else {
-			if (Input.GetButton("UpP2") && transform.position.y + sprite.bounds.min.y > AIManager.instance.cameraBounds.min.y)
+			if (Input.GetButton("UpP2") && transform.position.y + sprite.bounds.max.y < AIManager.instance.cameraBounds.max.y)
             {
 				transform.position += transform.right * moveSpeed * 0.08f;
 			}
-			if (Input.GetButton("DownP2") && transform.position.y + sprite.bounds.max.y < AIManager.instance.cameraBounds.max.y) {
+			if (Input.GetButton("DownP2") && transform.position.y + sprite.bounds.min.y > AIManager.instance.cameraBounds.min.y) {
 				transform.position += transform.right * -1f * moveSpeed * 0.08f;
 			}
 			if (Input.GetButton ("ShootP2") && canShoot) {
@@ -94,46 +87,31 @@ public class Player : MonoBehaviour {
 	}
 
 	public void GetDamage(int dmg) {
-		
 
 	    if (shield.activeSelf == false)
         {
             health -= dmg;
             UpdateForcefield();
         }
-        else
-	    {
-	        UpdateShield(dmg);
-	    }
 	}
 
-    void UpdateShield(int dmg)
-    {
-        Debug.Log("Shield Health: " + shield.GetComponent<Shield>().health);
-        shield.GetComponent<Shield>().health -= dmg;
-        if (shield.GetComponent<Shield>().health <= 0)
-        {
-            DisableShieldPowerup();
-        }
-    }
 
 
     void UpdateForcefield() {
 
 		if (health > 1) {
-			//TODO
-			//Forcefield change colour from healthy to die(1hp)
-		    if (health > 6)
-		    {
-                forcefield.GetComponent<SpriteRenderer>().color = new Color32(0,255,255,255);
-
-            }else if (health > 3 && health < 7)
-		    {
-                forcefield.GetComponent<SpriteRenderer>().color = new Color32(255, 153, 0, 255);
-            }else if(health > 1 && health < 4)
-		    {
-                forcefield.GetComponent<SpriteRenderer>().color = new Color32(255, 50, 0, 255);
-            }
+			
+			if (health > 8) {
+				forcefield.GetComponent<SpriteRenderer> ().color = new Color32 (0, 255, 255, 255);
+			} else if (health > 6) {
+				forcefield.GetComponent<SpriteRenderer> ().color = new Color32 (255, 255, 0, 255);
+			} else if (health > 4) {
+				forcefield.GetComponent<SpriteRenderer> ().color = new Color32 (255, 165, 0, 255);
+			} else if (health > 2) {
+				forcefield.GetComponent<SpriteRenderer> ().color = new Color32 (255, 37, 0, 255);
+			} else if (health > 1) {
+				forcefield.GetComponent<SpriteRenderer> ().color = new Color32 (255, 0, 0, 100);
+			}
 			forcefield.SetActive (true);
 			GetComponent<CircleCollider2D> ().radius = 0.5f;
 		}
@@ -186,17 +164,19 @@ public class Player : MonoBehaviour {
 
 		if (other.GetComponent<EnemyLaser> ()) {
 			GetDamage (other.GetComponent<EnemyLaser> ().damage);
+			GameObject laserHit = (GameObject)Resources.Load ("LaserHit");
+			laserHit.GetComponent<SpriteRenderer> ().color = other.GetComponent<SpriteRenderer> ().color;
+			Instantiate (laserHit, other.transform.position, other.transform.rotation);
             Destroy(other.gameObject);
 		}
 
-        if (other.GetComponent<AlienEnemy>())
+        if (other.GetComponentInParent<AlienEnemy>())
         {
             GetDamage(2);
-            Destroy(other.gameObject);
+			other.GetComponentInParent<AlienEnemy> ().GetDamage (50);
         }
 
 		if (other.GetComponent<Powerup> ()) {
-			Debug.Log ("111");
 			switch (other.GetComponent<Powerup>().type) {
 
 			case Powerup.Types.Heal:
@@ -244,16 +224,17 @@ public class Player : MonoBehaviour {
 	void ShieldPowerup() {
 		shield.SetActive (true);
 		shield.GetComponent<Shield> ().health = 4;
+		shield.GetComponent<Shield> ().UpdateShieldColor ();
 
 	}
 
 	public void DisableShieldPowerup() {
         shield.GetComponent<Shield>().health = 0;
+		shield.GetComponent<Shield> ().UpdateShieldColor ();
         shield.SetActive(false);
     }
 
 	void HealPowerup() {
-
 		health = 10;
 		UpdateForcefield ();
 	}

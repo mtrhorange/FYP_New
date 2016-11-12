@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PowerUpSpawner : MonoBehaviour
+public class PowerupSpawner : MonoBehaviour
 {
     public List<GameObject> powerUpList;
     public float timeToNext;
