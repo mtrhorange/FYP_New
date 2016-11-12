@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public float sfxVolume, bgmVolume;
     public Slider sfxSlider, bgmSlider;
     public GameObject gameOverPanel;
+    public GameObject won, lost, gc;
 
 	public bool isGameOver = false;
 	public bool isPaused = false;
@@ -66,9 +67,21 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 0;
         isGameOver = true;
+        gc.GetComponent<Text>().text = "GAME OVER!";
+        won.SetActive(false);
+        lost.SetActive(true);
         gameOverPanel.SetActive(true);
-
 	}
+
+    public void Won()
+    {
+        Time.timeScale = 0;
+        isGameOver = true;
+        gc.GetComponent<Text>().text = "Congratulations!";
+        won.SetActive(true);
+        lost.SetActive(false);
+        gameOverPanel.SetActive(true);
+    }
 
 	public void loadMainMenu()
 	{

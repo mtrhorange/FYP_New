@@ -10,7 +10,7 @@ public class RotatingEnemy : Enemy
 	// Use this for initialization
 	protected override void Start ()
     {
-        HP = 2;
+        HP = 8;
 
         setAttackTimer();
 	}

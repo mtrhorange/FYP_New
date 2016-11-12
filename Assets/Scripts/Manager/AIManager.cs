@@ -7,6 +7,9 @@ public class AIManager : MonoBehaviour {
     public static AIManager instance;
     //enemy prefabs
     public GameObject[] enemyPrefabs;
+    public GameObject bossPrefab;
+    private GameObject bos = null;
+    private bool bosSpawned = false;
     //basic enemies
     public List<GameObject> basicEnemies;
     public Sprite[] basicEnemySprites;
@@ -17,6 +20,7 @@ public class AIManager : MonoBehaviour {
 
     //spawning variables
     public float spawnTimer = 5f;
+    private float scrubMobsTimer = 60f;
     private float spawnX;
     private bool leftLane = true, spawningAlien = false;
     private int pattern = 0, alienCount= 0, alienLimit;
@@ -49,38 +53,78 @@ public class AIManager : MonoBehaviour {
 	//Update
 	void Update()
     {
-        if (spawningAlien && spawnTimer <= 0)
+        //during mobs wave
+        if (scrubMobsTimer > 0)
         {
-            spawnAlien();
+            scrubMobsTimer -= Time.deltaTime;
+            if (spawningAlien && spawnTimer <= 0)
+            {
+                spawnAlien();
+            }
+            else if (!spawningAlien && spawnTimer <= 0)
+            {
+                int spon = Random.Range(0, 3);
+                if (spon == 0)
+                {
+                    spawnBasic();
+                }
+                else if (spon == 1)
+                {
+                    spawnRotating();
+                }
+                else if (spon == 2)
+                {
+                    spawningAlien = true;
+                    //set pattern
+                    pattern = Random.Range(1, 4);
+                    alienLimit = Random.Range(4, 11);
+                }
+                spawnBiEnemy();
+                spawnTimer = 2.5f;
+            }
+            spawnTimer -= Time.deltaTime;
         }
-        else if (!spawningAlien && spawnTimer <= 0)
+        //else if timer is over but enemies still remain
+        else if (!bosSpawned && basicEnemies.Count == 0 && rotatingEnemies.Count == 0 && biEnemies.Count == 0)
         {
-            int spon = Random.Range(0, 3);
-            if (spon == 0)
+            bosSpawned = true;
+            bos = (GameObject)Instantiate(bossPrefab, new Vector2(cameraBounds.center.x, -10.2f), bossPrefab.transform.rotation);
+            bos.GetComponent<Rigidbody2D>().velocity = transform.up * Time.deltaTime * 170f;
+        }
+        //else its boss fight
+        else
+        {
+            if (bosSpawned)
             {
-                spawnBasic();
+                if (bos.transform.position.y >= 0)
+                {
+                    bos.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                    bos.GetComponent<Rigidbody2D>().isKinematic = true;
+                    bos.transform.position = new Vector2(0, 0);
+                }
             }
-            else if (spon == 1)
+
+            //spawn the aliens thing also
+            if (spawningAlien && spawnTimer <= 0)
             {
-                spawnRotating();
+                spawnAlien();
             }
-            else if (spon == 2)
+            else if (!spawningAlien && spawnTimer <= 0)
             {
                 spawningAlien = true;
                 //set pattern
                 pattern = Random.Range(1, 4);
                 alienLimit = Random.Range(4, 11);
+                spawnTimer = 2.5f;
             }
-            spawnBiEnemy();
-            spawnTimer = 2.5f;
+            spawnTimer -= Time.deltaTime;
         }
-        spawnTimer -= Time.deltaTime;
     }
 
     //spawn basic enemies
     private void spawnBasic()
     {
-        if (basicEnemies.Count < 8)
+        if (basicEnemies.Count < 12)
         {
             if (leftLane)
             {
@@ -111,7 +155,7 @@ public class AIManager : MonoBehaviour {
     //spawn rotating enemy
     private void spawnRotating()
     {
-        if (rotatingEnemies.Count < 6)
+        if (rotatingEnemies.Count < 10)
         {
             if (leftLane)
             {

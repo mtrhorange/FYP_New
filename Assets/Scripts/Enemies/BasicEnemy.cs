@@ -7,7 +7,7 @@ public class BasicEnemy : Enemy {
 	protected override void Start()
     {
         //basic enemy properties
-        HP = 3;
+        HP = 4;
         moveSpeed = 60f;
 
         base.Start();

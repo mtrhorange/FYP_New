@@ -9,12 +9,14 @@ public class EnemyLaser : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		GetComponent<Rigidbody2D>().velocity = transform.up * Time.deltaTime * 80f;
+		//GetComponent<Rigidbody2D>().velocity = transform.up * Time.deltaTime * 80f;
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
+        transform.position += transform.up * Time.deltaTime * 6f;
+
         if (lifeTime < 0)
         {
             Destroy(this.gameObject);

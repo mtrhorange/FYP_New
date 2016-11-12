@@ -50,7 +50,7 @@ public class BossSide : Boss {
 
                 transform.rotation =
             Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y,
-                transform.rotation.eulerAngles.z + Time.deltaTime * 30f));
+                transform.rotation.eulerAngles.z + Time.deltaTime * 45f));
 
                 Debug.Log(transform.rotation.eulerAngles.z);
 
@@ -118,7 +118,7 @@ public class BossSide : Boss {
         {
             Debug.Log("turning soon");
             turningSoon = true;
-            secondsToTurn = 3f;
+            secondsToTurn = 1.5f;
             lookLeft = !lookLeft;
         }
     }

@@ -8,11 +8,14 @@ public class PlayerLaser : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		GetComponent<Rigidbody2D>().velocity = transform.up * Time.deltaTime * 600f;
+		//GetComponent<Rigidbody2D>().velocity = transform.up * Time.deltaTime * 600f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+        transform.position += transform.up * Time.deltaTime * 18f;
+
         if (lifeTime < 0)
         {
             Destroy(this.gameObject);

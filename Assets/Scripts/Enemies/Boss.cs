@@ -14,8 +14,8 @@ public class Boss : Enemy {
         HP = 300;
         moveSpeed = 0f;
 
-        minTime = 2f;
-        maxTime = 3f;
+        minTime = 1f;
+        maxTime = 2f;
 
         //attack timer
         setAttackTimer();
@@ -120,5 +120,11 @@ public class Boss : Enemy {
         }
 
 
+    }
+
+    //onDestroy
+    public void OnDestroy()
+    {
+        GameManager.instance.Won();
     }
 }

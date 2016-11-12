@@ -185,6 +185,9 @@ public class Player : MonoBehaviour {
 
 		if (other.GetComponent<Powerup> ()) {
             SFXManager.instance.playSFX(sound.powerup);
+            GameObject collect = (GameObject)Resources.Load("Collection");
+            collect = (GameObject)Instantiate(collect, other.transform.position, Quaternion.identity);
+            collect.GetComponent<SpriteRenderer>().color = other.GetComponent<SpriteRenderer>().color;
             switch (other.GetComponent<Powerup>().type) {
 
 			case Powerup.Types.Heal:
@@ -204,6 +207,7 @@ public class Player : MonoBehaviour {
 				Destroy (other.gameObject);
 				break;
 			}
+            
 		}
 	}
 
