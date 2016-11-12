@@ -24,7 +24,9 @@ public class MainBody : MonoBehaviour {
         {
             //weaken
             GetComponentInParent<Enemy>().weakened = true;
-
+            GameObject laserHit = (GameObject)Resources.Load("LaserHit");
+            laserHit.GetComponent<SpriteRenderer>().color = other.GetComponent<SpriteRenderer>().color;
+            Instantiate(laserHit, other.transform.position, other.transform.rotation);
             Destroy(other.gameObject);
         }
     }

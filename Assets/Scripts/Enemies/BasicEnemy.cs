@@ -7,7 +7,7 @@ public class BasicEnemy : Enemy {
 	protected override void Start()
     {
         //basic enemy properties
-        HP = 1;
+        HP = 3;
         moveSpeed = 60f;
 
         base.Start();
@@ -18,4 +18,10 @@ public class BasicEnemy : Enemy {
     {
         base.Update();
 	}
+
+    //On destroy
+    protected override void OnDestroy()
+    {
+        AIManager.instance.basicEnemies.Remove(this.gameObject);
+    }
 }

@@ -52,18 +52,29 @@ public class RotatingEnemy : Enemy
         //attack once timer is over
         if (attackTimer <= 0 )
         {
-            float angle1 = Vector2.Angle(GameManager.instance.player1.transform.position, transform.up);
-            float angle2 = Vector2.Angle(GameManager.instance.player2.transform.position, transform.up);
+            float angle1 = 50f, angle2 = 50f;
+
+            if (GameManager.instance.player1)
+            angle1 = Vector2.Angle(GameManager.instance.player1.transform.position, transform.up);
+            if (GameManager.instance.player2)
+            angle2 = Vector2.Angle(GameManager.instance.player2.transform.position, transform.up);
 
             if (angle1 <= 15f || angle2 <= 15f)
             {
                 Attack();
+                //reset timer
+                setAttackTimer();
             }
             
-            //reset timer
-            setAttackTimer();
+            
         }
 
         attackTimer -= Time.deltaTime;
+    }
+
+    //On destroy
+    protected override void OnDestroy()
+    {
+        AIManager.instance.rotatingEnemies.Remove(this.gameObject);
     }
 }

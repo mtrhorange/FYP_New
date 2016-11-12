@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour {
 
     //health
 	public bool weakened = false;
-	protected int HP = 1;
+	protected int HP = 5;
 
     //movement
 	public bool goDown = false, faceLeft;
@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour {
 
     //attack
     public float attackTimer;
-    protected float minTime = 5f, maxTime = 8f;
+    protected float minTime = 3f, maxTime = 5f;
 
 
 	//Start

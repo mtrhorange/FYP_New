@@ -21,6 +21,9 @@ public class WeakPoint : MonoBehaviour {
         {
             //damage
             GetComponentInParent<Enemy>().GetDamage(other.gameObject.GetComponent<PlayerLaser>().damage);
+            GameObject laserHit = (GameObject)Resources.Load("LaserHit");
+            laserHit.GetComponent<SpriteRenderer>().color = other.GetComponent<SpriteRenderer>().color;
+            Instantiate(laserHit, other.transform.position, other.transform.rotation);
 
             Destroy(other.gameObject);
         }
