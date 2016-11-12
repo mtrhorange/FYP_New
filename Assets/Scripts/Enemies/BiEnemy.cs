@@ -7,7 +7,7 @@ public class BiEnemy : Enemy {
     protected override void Start()
     {
         //bi enemy properties
-        HP = 1;
+        HP = 8;
         moveSpeed = 35f;
 
         transform.Rotate(Vector3.forward, 90f);
@@ -29,5 +29,11 @@ public class BiEnemy : Enemy {
         temp.GetComponent<EnemyLaser>().damage = 1;
         temp = (GameObject)Instantiate(eLaser, transform.position, Quaternion.Euler(transform.rotation.x, transform.rotation.y, 270));
         temp.GetComponent<EnemyLaser>().damage = 1;
+    }
+
+    //On destroy
+    protected override void OnDestroy()
+    {
+        AIManager.instance.biEnemies.Remove(this.gameObject);
     }
 }

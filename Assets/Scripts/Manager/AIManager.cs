@@ -8,12 +8,12 @@ public class AIManager : MonoBehaviour {
     //enemy prefabs
     public GameObject[] enemyPrefabs;
     //basic enemies
-    private List<GameObject> basicEnemies;
+    public List<GameObject> basicEnemies;
     public Sprite[] basicEnemySprites;
     //bi enemies
-    private List<GameObject> biEnemy;
+    public List<GameObject> biEnemies;
     //rotating enemies
-    private List<GameObject> rotatingEnemies;
+    public List<GameObject> rotatingEnemies;
 
     //spawning variables
     public float spawnTimer = 5f;
@@ -36,7 +36,7 @@ public class AIManager : MonoBehaviour {
         cameraBounds = new Bounds(camera.transform.position, new Vector3(cameraHeight * screenAspect, cameraHeight, 0));
 
         basicEnemies = new List<GameObject>();
-        biEnemy = new List<GameObject>();
+        biEnemies = new List<GameObject>();
         rotatingEnemies = new List<GameObject>();
 	}
 	
@@ -49,47 +49,46 @@ public class AIManager : MonoBehaviour {
 	//Update
 	void Update()
     {
-        if (spawningAlien && spawnTimer <= 0)
-        {
-            spawnAlien();
-        }
-        else if (!spawningAlien && spawnTimer <= 0)
-        {
-            int spon = Random.Range(0, 3);
-            if (spon == 0)
-            {
-                spawnBasic();
-            }
-            else if (spon == 1)
-            {
-                spawnRotating();
-            }
-            else if (spon == 2)
-            {
-                spawningAlien = true;
-                //set pattern
-                pattern = Random.Range(1, 4);
-                alienLimit = Random.Range(4, 11);
-            }
-            spawnBiEnemy();
-            spawnTimer = 3f;
-        }
-
-        spawnTimer -= Time.deltaTime;
+        //if (spawningAlien && spawnTimer <= 0)
+        //{
+        //    spawnAlien();
+        //}
+        //else if (!spawningAlien && spawnTimer <= 0)
+        //{
+        //    int spon = Random.Range(0, 3);
+        //    if (spon == 0)
+        //    {
+        //        spawnBasic();
+        //    }
+        //    else if (spon == 1)
+        //    {
+        //        spawnRotating();
+        //    }
+        //    else if (spon == 2)
+        //    {
+        //        spawningAlien = true;
+        //        //set pattern
+        //        pattern = Random.Range(1, 4);
+        //        alienLimit = Random.Range(4, 11);
+        //    }
+        //    spawnBiEnemy();
+        //    spawnTimer = 2.5f;
+        //}
+        //spawnTimer -= Time.deltaTime;
 	}
 
     //spawn basic enemies
     private void spawnBasic()
     {
-        if (basicEnemies.Count < 6)
+        if (basicEnemies.Count < 8)
         {
             if (leftLane)
             {
-                spawnX = cameraBounds.center.x - 1f;
+                spawnX = cameraBounds.center.x - 1.2f;
             }
             else
             {
-                spawnX = cameraBounds.center.x + 1f;
+                spawnX = cameraBounds.center.x + 1.2f;
             }
 
             basicEnemies.Add((GameObject)Instantiate(enemyPrefabs[0], new Vector2(spawnX, cameraBounds.min.y), Quaternion.identity));
@@ -103,9 +102,9 @@ public class AIManager : MonoBehaviour {
     //spawn bi enemy
     private void spawnBiEnemy()
     {
-        if (biEnemy.Count < 8)
+        if (biEnemies.Count < 4)
         {
-            biEnemy.Add((GameObject)Instantiate(enemyPrefabs[1], new Vector2(cameraBounds.center.x, cameraBounds.min.y), Quaternion.identity));
+            biEnemies.Add((GameObject)Instantiate(enemyPrefabs[1], new Vector2(cameraBounds.center.x, cameraBounds.min.y), Quaternion.identity));
         }
     }
 
@@ -116,11 +115,11 @@ public class AIManager : MonoBehaviour {
         {
             if (leftLane)
             {
-                spawnX = cameraBounds.center.x - 1f;
+                spawnX = cameraBounds.center.x - 1.2f;
             }
             else
             {
-                spawnX = cameraBounds.center.x + 1f;
+                spawnX = cameraBounds.center.x + 1.2f;
             }
 
             rotatingEnemies.Add((GameObject)Instantiate(enemyPrefabs[2], new Vector2(spawnX, cameraBounds.min.y), Quaternion.identity));

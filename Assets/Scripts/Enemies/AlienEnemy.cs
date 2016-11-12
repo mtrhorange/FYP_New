@@ -11,6 +11,7 @@ public class AlienEnemy : Enemy {
 	protected override void Start()
     {
         moveSpeed = 120f;
+        HP = 1;
 	}
 	
 	//Update
@@ -48,6 +49,7 @@ public class AlienEnemy : Enemy {
             isDead = true;
             GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             GetComponent<SpriteRenderer>().sprite = dead;
+            GetComponentInChildren<PolygonCollider2D>().enabled = false;
             Destroy(this.gameObject, 1f);
         }
     }

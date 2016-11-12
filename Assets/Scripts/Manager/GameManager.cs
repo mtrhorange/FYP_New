@@ -17,8 +17,8 @@ public class GameManager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-	    sfxVolume = MenuManager.instance.sfxValue;
-	    bgmVolume = MenuManager.instance.bgmValue;
+	    //sfxVolume = MenuManager.instance.sfxValue;
+	    //bgmVolume = MenuManager.instance.bgmValue;
 	}
 	
 	// Update is called once per frame
