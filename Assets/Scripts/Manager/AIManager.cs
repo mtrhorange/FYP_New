@@ -55,7 +55,7 @@ public class AIManager : MonoBehaviour {
         }
         else if (!spawningAlien && spawnTimer <= 0)
         {
-            int spon = Random.Range(0, 3);
+            int spon = 1;//Random.Range(0, 3);
             if (spon == 0)
             {
                 spawnBasic();
@@ -71,8 +71,8 @@ public class AIManager : MonoBehaviour {
                 pattern = Random.Range(1, 4);
                 alienLimit = Random.Range(4, 11);
             }
-            spawnBiEnemy();
-            spawnTimer = 4f;
+            //spawnBiEnemy();
+            spawnTimer = 3f;
         }
 
         spawnTimer -= Time.deltaTime;
@@ -81,7 +81,7 @@ public class AIManager : MonoBehaviour {
     //spawn basic enemies
     private void spawnBasic()
     {
-        if (basicEnemies.Count < 4)
+        if (basicEnemies.Count < 6)
         {
             if (leftLane)
             {
@@ -103,7 +103,7 @@ public class AIManager : MonoBehaviour {
     //spawn bi enemy
     private void spawnBiEnemy()
     {
-        if (biEnemy.Count < 6)
+        if (biEnemy.Count < 8)
         {
             biEnemy.Add((GameObject)Instantiate(enemyPrefabs[1], new Vector2(cameraBounds.center.x, cameraBounds.min.y), Quaternion.identity));
         }
@@ -112,7 +112,7 @@ public class AIManager : MonoBehaviour {
     //spawn rotating enemy
     private void spawnRotating()
     {
-        if (rotatingEnemies.Count < 4)
+        if (rotatingEnemies.Count < 1)
         {
             if (leftLane)
             {

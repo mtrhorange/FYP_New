@@ -4,6 +4,8 @@ using System.Collections;
 public class AlienEnemy : Enemy {
 
     public Vector2 target;
+    public Sprite dead;
+    private bool isDead = false;
 
 	//Start
 	protected override void Start()
@@ -14,7 +16,10 @@ public class AlienEnemy : Enemy {
 	//Update
 	protected override void Update()
     {
-        Move();
+        if (!isDead)
+        {
+            Move();
+        }
 	}
 
     //Move
@@ -33,15 +38,17 @@ public class AlienEnemy : Enemy {
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    //get damage
+    public override void GetDamage(int dmg)
     {
-        //if the other thing that touch me is a laser, check for player script instead if possible
-        if (other.GetComponent<PlayerLaser>())
+        HP -= dmg;
+        //check die
+        if (HP <= 0)
         {
-            //damage
-            GetDamage(1);
-
-            Destroy(other.gameObject);
+            isDead = true;
+            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            GetComponent<SpriteRenderer>().sprite = dead;
+            Destroy(this.gameObject, 1f);
         }
     }
 }

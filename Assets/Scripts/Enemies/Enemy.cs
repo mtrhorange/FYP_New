@@ -96,7 +96,7 @@ public class Enemy : MonoBehaviour {
     }
 
 	//called when this entity receives damage from another source
-	public void GetDamage(int dmg)
+	public virtual void GetDamage(int dmg)
 	{
 		HP -= dmg;
 		//check die
