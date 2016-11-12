@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -34,5 +35,10 @@ public class GameManager : MonoBehaviour
     public void setBGM()
     {
         bgmVolume = bgmSlider.value;
+    }
+
+    public void loadMainMenu()
+    {
+        SceneManager.LoadScene("Main Menu");
     }
 }
