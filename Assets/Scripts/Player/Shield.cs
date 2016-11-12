@@ -25,10 +25,10 @@ public class Shield : MonoBehaviour {
 			Instantiate (laserHit, other.transform.position, other.transform.rotation);
             Destroy(other.gameObject);
         }
-	    if (other.GetComponent<AlienEnemy>())
+	    if (other.GetComponentInParent<AlienEnemy>())
 	    {
             GetDamage(2);
-            Destroy(other.gameObject);
+			other.GetComponentInParent<AlienEnemy> ().GetDamage (50);
         }
 			
         

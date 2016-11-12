@@ -8,7 +8,7 @@ public class Player : MonoBehaviour {
 	public int playerNo = 1;
 
 	float moveSpeed = 1f;
-	public int health = 10;
+	public int health = 6;
 	bool canShoot = true;
 	float shootTimer = 0;
 
@@ -58,6 +58,9 @@ public class Player : MonoBehaviour {
 	}
 
 	void MovementInput() {
+		if (GameManager.instance.isPaused)
+			return;
+
 		if (playerNo == 1) {
 			if (Input.GetButton("UpP1") && transform.position.y + sprite.bounds.max.y < AIManager.instance.cameraBounds.max.y)
             {
@@ -88,11 +91,14 @@ public class Player : MonoBehaviour {
 
 	public void GetDamage(int dmg) {
 
-	    if (shield.activeSelf == false)
-        {
-            health -= dmg;
-            UpdateForcefield();
-        }
+        health -= dmg;
+        UpdateForcefield();
+
+		if (health < 1)
+		{
+			Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+			Destroy(gameObject);
+		}
 	}
 
 
@@ -101,15 +107,15 @@ public class Player : MonoBehaviour {
 
 		if (health > 1) {
 			
-			if (health > 8) {
+			if (health == 6) {
 				forcefield.GetComponent<SpriteRenderer> ().color = new Color32 (0, 255, 255, 255);
-			} else if (health > 6) {
+			} else if (health == 5) {
 				forcefield.GetComponent<SpriteRenderer> ().color = new Color32 (255, 255, 0, 255);
-			} else if (health > 4) {
+			} else if (health == 4) {
 				forcefield.GetComponent<SpriteRenderer> ().color = new Color32 (255, 165, 0, 255);
-			} else if (health > 2) {
+			} else if (health == 3) {
 				forcefield.GetComponent<SpriteRenderer> ().color = new Color32 (255, 37, 0, 255);
-			} else if (health > 1) {
+			} else if (health == 2) {
 				forcefield.GetComponent<SpriteRenderer> ().color = new Color32 (255, 0, 0, 100);
 			}
 			forcefield.SetActive (true);
@@ -120,11 +126,7 @@ public class Player : MonoBehaviour {
             Debug.Log("force shield off");
 			forcefield.SetActive (false);
 			GetComponent<CircleCollider2D> ().radius = 0.2f;
-		}else if (health < 1 && !forcefield.activeSelf)
-		{
-            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-            Destroy(gameObject);
-        }
+		}
 
 	}
 
@@ -180,30 +182,28 @@ public class Player : MonoBehaviour {
 			switch (other.GetComponent<Powerup>().type) {
 
 			case Powerup.Types.Heal:
-				HealPowerup ();
+				otherPlayer.HealPowerup ();
 				Destroy (other.gameObject);
 				break;
 			case Powerup.Types.Laser:
-				LaserPowerup ();
+				otherPlayer.LaserPowerup ();
 				Destroy (other.gameObject);
 				break;
 			case Powerup.Types.Shield:
-				ShieldPowerup ();
+				otherPlayer.ShieldPowerup ();
 				Destroy (other.gameObject);
 				break;
 			case Powerup.Types.Split:
-				SplitPowerup ();
+				otherPlayer.SplitPowerup ();
 				Destroy (other.gameObject);
 				break;
 			}
-
-
 		}
 	}
 
 	#region Powerups
 
-	void LaserPowerup() {
+	public void LaserPowerup() {
 		if (noOfLaser < 3) {
 			noOfLaser++;
 			laserPowerTimer = 0;
@@ -211,7 +211,7 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	void SplitPowerup() {
+	public void SplitPowerup() {
 
 		if (!splitPowerup) {
 			if (noOfLaser == 1)
@@ -221,7 +221,7 @@ public class Player : MonoBehaviour {
 			splitPowerTimer = 0;
 	}
 
-	void ShieldPowerup() {
+	public void ShieldPowerup() {
 		shield.SetActive (true);
 		shield.GetComponent<Shield> ().health = 4;
 		shield.GetComponent<Shield> ().UpdateShieldColor ();
@@ -234,8 +234,10 @@ public class Player : MonoBehaviour {
         shield.SetActive(false);
     }
 
-	void HealPowerup() {
-		health = 10;
+	public void HealPowerup() {
+		health += 3;
+		if (health > 6)
+			health = 6;
 		UpdateForcefield ();
 	}
 

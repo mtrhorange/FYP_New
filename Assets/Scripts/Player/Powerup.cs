@@ -11,7 +11,7 @@ public class Powerup : MonoBehaviour {
 	float lifespan = 20f;
 	// Use this for initialization
 	void Start () {
-		GetComponent<Rigidbody2D>().velocity = direction * Time.deltaTime * 50f;
+		GetComponent<Rigidbody2D>().velocity = direction * Time.deltaTime * 100f;
 	}
 	
 	// Update is called once per frame

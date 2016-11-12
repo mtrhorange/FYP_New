@@ -6,8 +6,8 @@ public class PowerupSpawner : MonoBehaviour
 {
     public List<GameObject> powerUpList;
     public float timeToNext;
-    public float randomTimeMin = 5f;
-    public float randomTimeMax = 10f;
+    public float randomTimeMin = 3f;
+    public float randomTimeMax = 7f;
     
 
     // Use this for initialization
