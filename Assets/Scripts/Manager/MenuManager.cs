@@ -6,23 +6,21 @@ using UnityEngine.UI;
 public class MenuManager : MonoBehaviour
 {
 
-    public static MenuManager instance;
 
     public Slider sfxSlider;
     public Slider bgmSlider;
-    public float bgmValue = 1;
-    public float sfxValue = 1;
 
-
-    void Awake()
-    {
-        DontDestroyOnLoad(this);
-        instance = this;
-    }
     // Use this for initialization
-    void Start () {
-	
-	}
+    void Start ()
+    {
+        if (BGMManager.instance)
+        {
+            sfxSlider.value = BGMManager.instance.sfxValue;
+            bgmSlider.value = BGMManager.instance.bgmValue;
+
+        }
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -39,13 +37,13 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene("Game");
     }
 
-    public void setSFX()
+    public void setSFXSlider()
     {
-        sfxValue = sfxSlider.value;
+        BGMManager.instance.setSFX(sfxSlider.value);
     }
 
-    public void setBGM()
+    public void setBGMSlider()
     {
-        bgmValue = bgmSlider.value;
+        BGMManager.instance.setBGM(bgmSlider.value);
     }
 }

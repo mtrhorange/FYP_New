@@ -98,6 +98,8 @@ public class Player : MonoBehaviour {
 		{
 			Instantiate(explosionPrefab, transform.position, Quaternion.identity);
 			Destroy(gameObject);
+            SFXManager.instance.playSFX(sound.explosion);
+            GameManager.instance.GameOver();
 		}
 	}
 
@@ -159,6 +161,7 @@ public class Player : MonoBehaviour {
 			laser2.GetComponent<PlayerLaser> ().damage = laserDamage;
 			laser3.GetComponent<PlayerLaser> ().damage = laserDamage;
 		}
+        SFXManager.instance.playSFX(sound.laser);
 		canShoot = false;
 	}
 
@@ -169,17 +172,20 @@ public class Player : MonoBehaviour {
 			GameObject laserHit = (GameObject)Resources.Load ("LaserHit");
 			laserHit.GetComponent<SpriteRenderer> ().color = other.GetComponent<SpriteRenderer> ().color;
 			Instantiate (laserHit, other.transform.position, other.transform.rotation);
+            SFXManager.instance.playSFX(sound.hit);
             Destroy(other.gameObject);
 		}
 
         if (other.GetComponentInParent<AlienEnemy>())
         {
             GetDamage(2);
-			other.GetComponentInParent<AlienEnemy> ().GetDamage (50);
+            SFXManager.instance.playSFX(sound.hit);
+            other.GetComponentInParent<AlienEnemy> ().GetDamage (50);
         }
 
 		if (other.GetComponent<Powerup> ()) {
-			switch (other.GetComponent<Powerup>().type) {
+            SFXManager.instance.playSFX(sound.powerup);
+            switch (other.GetComponent<Powerup>().type) {
 
 			case Powerup.Types.Heal:
 				otherPlayer.HealPowerup ();

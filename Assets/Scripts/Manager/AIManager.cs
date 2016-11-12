@@ -49,33 +49,33 @@ public class AIManager : MonoBehaviour {
 	//Update
 	void Update()
     {
-        //if (spawningAlien && spawnTimer <= 0)
-        //{
-        //    spawnAlien();
-        //}
-        //else if (!spawningAlien && spawnTimer <= 0)
-        //{
-        //    int spon = Random.Range(0, 3);
-        //    if (spon == 0)
-        //    {
-        //        spawnBasic();
-        //    }
-        //    else if (spon == 1)
-        //    {
-        //        spawnRotating();
-        //    }
-        //    else if (spon == 2)
-        //    {
-        //        spawningAlien = true;
-        //        //set pattern
-        //        pattern = Random.Range(1, 4);
-        //        alienLimit = Random.Range(4, 11);
-        //    }
-        //    spawnBiEnemy();
-        //    spawnTimer = 2.5f;
-        //}
-        //spawnTimer -= Time.deltaTime;
-	}
+        if (spawningAlien && spawnTimer <= 0)
+        {
+            spawnAlien();
+        }
+        else if (!spawningAlien && spawnTimer <= 0)
+        {
+            int spon = Random.Range(0, 3);
+            if (spon == 0)
+            {
+                spawnBasic();
+            }
+            else if (spon == 1)
+            {
+                spawnRotating();
+            }
+            else if (spon == 2)
+            {
+                spawningAlien = true;
+                //set pattern
+                pattern = Random.Range(1, 4);
+                alienLimit = Random.Range(4, 11);
+            }
+            spawnBiEnemy();
+            spawnTimer = 2.5f;
+        }
+        spawnTimer -= Time.deltaTime;
+    }
 
     //spawn basic enemies
     private void spawnBasic()
